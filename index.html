@@ -674,7 +674,13 @@
         function closeZoom() { const overlay = document.getElementById('zoom-overlay'); const clone = document.getElementById('zoom-clone'); overlay.classList.remove('active'); clone.classList.remove('active'); }
         document.getElementById('zoom-overlay').addEventListener('click', closeZoom);
 
-        const songs = [ { name: "Đường tôi chở em về - Bùi Trường Linh", src: "music.mp3", img: "musicpt.png" }, { name: "Tiny love - Thịnh Suy", src: "music2.mp3", img: "musicpt2.png" }, { name: "3107 - W/n ft. Nâu, Duongg", src: "music3.mp3", img: "musicpt3.png" } ];
+const songs = [
+    { name: "Đường tôi chở em về - Bùi Trường Linh", src: "music.mp3",  img: "musicpt.png"  },
+    { name: "Tiny love - Thịnh Suy",                  src: "music2.mp3", img: "musicpt2.png" },
+    { name: "3107 - W/n ft. Nâu, Duongg",             src: "music3.mp3", img: "musicpt3.png" },
+	{ name: "So Well (Ver mới) - Ân Ngờ", src: "music4.mp3", img: "musicpt4.png" }
+    // { name: "Tên bài - Ca sĩ", src: "music4.mp3", img: "musicpt4.png" },
+];
         let index = 0; let isLooping = false;
         const audio = document.getElementById('audio'); const playBtn = document.getElementById('play'); const nextBtn = document.getElementById('next'); const prevBtn = document.getElementById('prev'); const loopBtn = document.getElementById('loop'); const overlay = document.getElementById('overlay'); const card = document.getElementById('profile-card'); const diskImg = document.getElementById('disk-img'); const progFill = document.getElementById('prog-fill'); const songNameContainer = document.getElementById('song-name-container');
 
