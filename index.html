@@ -22,18 +22,8 @@
         /* --- CẤU HÌNH CHUNG --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        *, *::before, *::after,
-        a, a:hover, a:active, a:visited,
-        button, button:hover,
-        input, input:hover,
-        textarea, select,
-        p, span, h1, h2, h3, h4, h5, h6,
-        div, section, img, label,
-        [onclick], [class] {
-            cursor: none !important;
-        }
-
-        body { cursor: none !important; user-select: none; -webkit-user-select: none; }
+        body { cursor: none; user-select: none; -webkit-user-select: none; }
+        a, button, input, img { cursor: none; }
 
         body {
             background-color: var(--bg-color);
@@ -110,7 +100,7 @@
         #zoom-clone {
             position: fixed; top: 50%; left: 50%; width: 350px; height: 350px; object-fit: cover; border-radius: 50%; border: 4px solid var(--accent); box-shadow: 0 0 50px rgba(255, 255, 255, 0.5); opacity: 0; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%) scale(0.5); transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        #zoom-clone.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; cursor: none !important; }
+        #zoom-clone.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; cursor: zoom-out !important; }
         #zoom-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px); z-index: 10000; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         #zoom-overlay.active { opacity: 1; pointer-events: auto; }
 
@@ -122,7 +112,7 @@
         .job-title { color: var(--text-secondary); font-size: 0.85rem; min-height: 1rem; line-height: 1.6; white-space: normal; text-align: center; }
         .blur-text { filter: blur(8px); opacity: 0.4; transform: scale(0.95); transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1); user-select: none; }
         .blur-text:active, .blur-text:hover { opacity: 0.7; transform: scale(0.98); }
-        .blur-text.revealed { filter: blur(0); opacity: 1; transform: scale(1); user-select: text; cursor: none !important; }
+        .blur-text.revealed { filter: blur(0); opacity: 1; transform: scale(1); user-select: text; cursor: text !important; }
 
         .location { display: flex; justify-content: center; align-items: center; gap: 8px; margin-bottom: 25px; font-size: 0.95rem; color: var(--text-secondary); font-weight: 500; }
         .location i { color: #dcdcdc; font-size: 1.1rem; filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6)); animation: bounce 2s infinite; }
@@ -141,55 +131,10 @@
             font-size: 1rem; 
             opacity: 0.4; 
             transition: 0.3s; 
-            cursor: none !important;
+            cursor: pointer !important;
             width: fit-content;
         }
         #secret-btn-trigger:hover { opacity: 1; color: var(--accent); transform: rotate(90deg); }
-
-        /* --- DISCORD STATUS --- */
-        #discord-status {
-            display: flex; align-items: center;
-            gap: 10px; margin-bottom: 15px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 12px; padding: 10px 14px;
-            text-align: left;
-        }
-        #ds-avatar-wrap {
-            position: relative; flex-shrink: 0;
-            width: 36px; height: 36px;
-        }
-        #ds-avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            object-fit: cover; border: 2px solid rgba(255,255,255,0.1);
-        }
-        #ds-dot {
-            position: absolute; bottom: 0; right: 0;
-            width: 11px; height: 11px; border-radius: 50%;
-            border: 2px solid #141414;
-        }
-        .ds-online { background: #23a55a; }
-        .ds-idle    { background: #f0b232; }
-        .ds-dnd     { background: #f23f43; }
-        .ds-offline { background: #80848e; }
-
-        #ds-info { flex: 1; overflow: hidden; }
-        #ds-name {
-            font-size: 0.82rem; font-weight: 700;
-            color: #fff; white-space: nowrap;
-            overflow: hidden; text-overflow: ellipsis;
-        }
-        #ds-status-label {
-            font-size: 0.72rem; color: var(--text-secondary);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            margin-top: 1px;
-        }
-        #ds-activity {
-            font-size: 0.7rem; color: #777;
-            white-space: normal; word-break: break-word;
-            margin-top: 1px; line-height: 1.4;
-        }
-
 
 
         .player-area { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 15px; text-align: left; border: 1px solid rgba(255,255,255,0.1); }
@@ -209,19 +154,15 @@
         .progress-bar { width: 100%; height: 3px; background: rgba(255,255,255,0.1); margin-top: 10px; border-radius: 2px; cursor: none !important; position: relative; }
         .progress-bar:hover { height: 5px; margin-top: 8px; }
         .progress-fill { height: 100%; width: 0%; background: var(--accent); transition: width 0.1s linear; box-shadow: 0 0 10px var(--accent); border-radius: 2px; }
-        .active-loop { color: var(--accent) !important; opacity: 1; text-shadow: 0 0 10px var(--accent); }
         .time-row { display: flex; justify-content: space-between; font-size: 0.65rem; color: #555; margin-top: 5px; padding: 0 1px; }
+        .active-loop { color: var(--accent) !important; opacity: 1; text-shadow: 0 0 10px var(--accent); }
 
         #custom-cursor { 
-            position: fixed; top: 0; left: 0; 
-            width: 50px; height: 50px; 
-            background-image: url('cursor.png'); 
-            background-size: contain; background-repeat: no-repeat; background-position: center; 
-            pointer-events: none; z-index: 99999; 
-            transform: translate3d(0, 0, 0); 
+            position: fixed; top: 0; left: 0; width: 50px; height: 50px; 
+            background-image: url('cursor.png'); background-size: contain; background-repeat: no-repeat; background-position: center; 
+            pointer-events: none; z-index: 99999; transform: translate3d(0, 0, 0); 
             transition: width 0.15s ease, height 0.15s ease, filter 0.15s ease;
-            will-change: transform; 
-            filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+            will-change: transform; filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
         }
         #custom-cursor.hovered { 
             width: 65px; height: 65px; 
@@ -276,15 +217,15 @@
         .secret-title { color: #fff; font-size: 1.5rem; margin-bottom: 20px; font-weight: 900; letter-spacing: 2px; }
         .secret-input { 
             width: 100%; padding: 12px; margin-bottom: 15px; background: #000; border: 1px solid #333; 
-            color: #fff; text-align: center; font-family: 'Inter', sans-serif; outline: none; border-radius: 5px; cursor: none !important;
+            color: #fff; text-align: center; font-family: 'Inter', sans-serif; outline: none; border-radius: 5px; cursor: text !important;
         }
         .secret-input:focus { border-color: var(--accent); }
         .secret-submit { 
             width: 100%; padding: 10px; background: var(--accent); color: #000; font-weight: bold; border: none; 
-            border-radius: 5px; cursor: none !important; transition: 0.2s; 
+            border-radius: 5px; cursor: pointer !important; transition: 0.2s; 
         }
         .secret-submit:hover { opacity: 0.8; }
-        .secret-close { margin-top: 15px; color: #666; font-size: 0.8rem; cursor: none !important; text-decoration: underline; }
+        .secret-close { margin-top: 15px; color: #666; font-size: 0.8rem; cursor: pointer !important; text-decoration: underline; }
 
         /* --- SECRET ALBUM --- */
         #secret-album { 
@@ -292,13 +233,13 @@
             background: #000; z-index: 20001; padding: 20px; overflow-y: auto; 
         }
         .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; max-width: 1000px; margin: 0 auto; padding-top: 50px; }
-        .album-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; border: 1px solid #333; transition: 0.3s; cursor: none !important; }
+        .album-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 8px; border: 1px solid #333; transition: 0.3s; cursor: pointer !important; }
         .album-img:hover { transform: scale(1.02); border-color: #fff; }
-        .album-back { position: fixed; top: 20px; left: 20px; color: #fff; font-size: 1.5rem; cursor: none !important; z-index: 20002; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 50%; }
+        .album-back { position: fixed; top: 20px; left: 20px; color: #fff; font-size: 1.5rem; cursor: pointer !important; z-index: 20002; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 50%; }
 
         @media (max-width: 768px) {
             #custom-cursor { display: none !important; }
-            body, a, button, input, img { cursor: none !important; }
+            body, a, button, input, img { cursor: auto !important; }
             .glitch-text { font-size: 1.8rem; letter-spacing: 2px; }
             .enter-btn-new { padding: 12px 30px; font-size: 1rem; }
             #profile-card { width: 95%; padding: 30px 20px; margin-top: 10px; }
@@ -350,20 +291,7 @@
         </div>
 
         <div class="location">
-            <i class="fa-solid fa-location-dot"></i> Phú Thọ (Vĩnh Phúc)
-        </div>
-
-        <!-- DISCORD STATUS -->
-        <div id="discord-status">
-            <div id="ds-avatar-wrap">
-                <img id="ds-avatar" src="avt.png" alt="Discord Avatar">
-                <span id="ds-dot" class="ds-offline"></span>
-            </div>
-            <div id="ds-info">
-                <div id="ds-name">Dylm29_</div>
-                <div id="ds-status-label">Đang tải...</div>
-                <div id="ds-activity"></div>
-            </div>
+            <i class="fa-solid fa-location-dot"></i> Phú Thọ (Vĩnh Phúc Cũ)
         </div>
 
         <div class="socials">
@@ -401,7 +329,6 @@
             <span id="time-cur">0:00</span>
             <span id="time-dur">0:00</span>
         </div>
-
     </div>
 
     <audio id="audio"></audio>
@@ -488,46 +415,25 @@
 
         const cursor = document.getElementById('custom-cursor');
         if (window.innerWidth > 768) {
-            document.addEventListener('mousemove', (e) => {
-                cursor.style.transform = `translate3d(${e.clientX - 25}px, ${e.clientY - 25}px, 0)`;
-            });
-
-            // Dùng event delegation — bắt tất cả hover-target kể cả dynamic
-            document.addEventListener('mouseover', (e) => {
-                if (e.target.closest('.hover-target')) {
-                    cursor.classList.add('hovered');
-                }
-            });
-            document.addEventListener('mouseout', (e) => {
-                if (e.target.closest('.hover-target')) {
-                    cursor.classList.remove('hovered');
-                }
-            });
+            document.addEventListener('mousemove', (e) => { cursor.style.transform = `translate3d(${e.clientX - 25}px, ${e.clientY - 25}px, 0)`; });
+            document.addEventListener('mouseover', (e) => { if (e.target.closest('.hover-target')) cursor.classList.add('hovered'); });
+            document.addEventListener('mouseout', (e) => { if (e.target.closest('.hover-target')) cursor.classList.remove('hovered'); });
         }
 
         document.addEventListener('click', (e) => createParticles(e.clientX, e.clientY));
         function createParticles(x, y) {
             const particleCount = 16;
             const colors = ['#ffffff', '#e0e0e0', '#c0c0c0', '#f0f0f0', '#aaaaff', '#ffaaaa'];
-            const shapes = ['50%', '0%', '30%']; // circle, square, rounded
+            const shapes = ['50%', '0%', '30%'];
             for (let i = 0; i < particleCount; i++) {
-                const p = document.createElement('div');
-                p.classList.add('particle');
-                document.body.appendChild(p);
+                const p = document.createElement('div'); p.classList.add('particle'); document.body.appendChild(p);
                 const color = colors[Math.floor(Math.random() * colors.length)];
                 const shape = shapes[Math.floor(Math.random() * shapes.length)];
                 const size = Math.random() * 5 + 3;
                 const angle = (Math.PI * 2 / particleCount) * i + (Math.random() - 0.5) * 0.5;
                 const velocity = Math.random() * 120 + 60;
                 const duration = Math.random() * 300 + 500;
-                p.style.cssText = `
-                    width:${size}px; height:${size}px;
-                    background:${color};
-                    border-radius:${shape};
-                    left:${x}px; top:${y}px;
-                    box-shadow: 0 0 ${size*2}px ${color};
-                    animation-duration: ${duration}ms;
-                `;
+                p.style.cssText = `width:${size}px;height:${size}px;background:${color};border-radius:${shape};left:${x}px;top:${y}px;box-shadow:0 0 ${size*2}px ${color};animation-duration:${duration}ms;`;
                 p.style.setProperty('--tx', Math.cos(angle) * velocity + 'px');
                 p.style.setProperty('--ty', Math.sin(angle) * velocity + 'px');
                 setTimeout(() => p.remove(), duration);
@@ -537,48 +443,30 @@
         const canvas = document.getElementById('rain-canvas'); const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
         const dropCount = window.innerWidth < 768 ? 60 : 120;
-        const windAngle = 0.15; // gió nhẹ sang phải
-        const drops = [];
-        const splashes = [];
+        const windAngle = 0.15;
+        const drops = [], splashes = [];
         for (let i = 0; i < dropCount; i++) drops.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            speed: Math.random() * 6 + 3,
-            length: Math.random() * 18 + 8,
-            opacity: Math.random() * 0.3 + 0.1,
-            width: Math.random() < 0.2 ? 1.5 : 0.8
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            speed: Math.random() * 6 + 3, length: Math.random() * 18 + 8,
+            opacity: Math.random() * 0.3 + 0.1, width: Math.random() < 0.2 ? 1.5 : 0.8
         });
         function drawRain() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.lineCap = 'round';
+            ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.lineCap = 'round';
             for (let i = 0; i < drops.length; i++) {
                 const d = drops[i];
-                ctx.beginPath();
-                ctx.strokeStyle = `rgba(255,255,255,${d.opacity})`;
-                ctx.lineWidth = d.width;
-                ctx.moveTo(d.x, d.y);
-                ctx.lineTo(d.x + Math.sin(windAngle) * d.length, d.y + d.length);
-                ctx.stroke();
-                d.x += Math.sin(windAngle) * d.speed * 0.3;
-                d.y += d.speed;
+                ctx.beginPath(); ctx.strokeStyle = `rgba(255,255,255,${d.opacity})`; ctx.lineWidth = d.width;
+                ctx.moveTo(d.x, d.y); ctx.lineTo(d.x + Math.sin(windAngle) * d.length, d.y + d.length); ctx.stroke();
+                d.x += Math.sin(windAngle) * d.speed * 0.3; d.y += d.speed;
                 if (d.y > canvas.height) {
-                    // splash nhỏ khi chạm đáy
-                    if (Math.random() < 0.3) {
-                        splashes.push({ x: d.x, y: canvas.height - 2, r: 0, maxR: Math.random() * 4 + 2, opacity: 0.4 });
-                    }
-                    d.y = -d.length;
-                    d.x = Math.random() * canvas.width;
+                    if (Math.random() < 0.3) splashes.push({ x: d.x, y: canvas.height - 2, r: 0, opacity: 0.4 });
+                    d.y = -d.length; d.x = Math.random() * canvas.width;
                 }
                 if (d.x > canvas.width) d.x = 0;
             }
-            // Vẽ splash
             for (let i = splashes.length - 1; i >= 0; i--) {
                 const s = splashes[i];
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(255,255,255,${s.opacity})`;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
+                ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(255,255,255,${s.opacity})`; ctx.lineWidth = 0.5; ctx.stroke();
                 s.r += 0.4; s.opacity -= 0.05;
                 if (s.opacity <= 0) splashes.splice(i, 1);
             }
@@ -587,85 +475,56 @@
         drawRain();
         window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
-        // Aurora - Northern lights
+        // Aurora
         const auroraCanvas = document.getElementById('aurora-canvas');
         const actx = auroraCanvas.getContext('2d');
-        auroraCanvas.width = window.innerWidth;
-        auroraCanvas.height = window.innerHeight;
+        auroraCanvas.width = window.innerWidth; auroraCanvas.height = window.innerHeight;
         let auroraT = 0;
         function drawAurora() {
             actx.clearRect(0, 0, auroraCanvas.width, auroraCanvas.height);
             const w = auroraCanvas.width, h = auroraCanvas.height;
             const bands = [
-                { y: h * 0.25, color1: 'rgba(100,220,180,', color2: 'rgba(80,140,255,', speed: 0.0008 },
-                { y: h * 0.35, color1: 'rgba(160,100,255,', color2: 'rgba(100,200,200,', speed: 0.0012 },
-                { y: h * 0.18, color1: 'rgba(60,180,255,',  color2: 'rgba(120,255,180,', speed: 0.0006 },
+                { y: h*0.25, color1: 'rgba(100,220,180,', color2: 'rgba(80,140,255,',  speed: 0.0008 },
+                { y: h*0.35, color1: 'rgba(160,100,255,', color2: 'rgba(100,200,200,', speed: 0.0012 },
+                { y: h*0.18, color1: 'rgba(60,180,255,',  color2: 'rgba(120,255,180,', speed: 0.0006 },
             ];
             bands.forEach((band, bi) => {
                 const grad = actx.createLinearGradient(0, 0, w, 0);
                 for (let xi = 0; xi <= 8; xi++) {
                     const t2 = auroraT * band.speed + bi * 2 + xi * 0.8;
                     const alpha = (Math.sin(t2) * 0.5 + 0.5) * 0.18;
-                    grad.addColorStop(xi / 8, xi % 2 === 0 ? band.color1 + alpha + ')' : band.color2 + alpha + ')');
+                    grad.addColorStop(xi/8, xi%2===0 ? band.color1+alpha+')' : band.color2+alpha+')');
                 }
-                actx.save();
-                actx.filter = 'blur(28px)';
+                actx.save(); actx.filter = 'blur(28px)';
                 const amp = 40 + bi * 15;
-                actx.beginPath();
-                actx.moveTo(0, band.y);
+                actx.beginPath(); actx.moveTo(0, band.y);
                 for (let xi = 0; xi <= w; xi += 8) {
-                    const wave = Math.sin(xi * 0.006 + auroraT * 0.001 + bi) * amp
-                               + Math.sin(xi * 0.003 + auroraT * 0.0007 + bi * 2) * (amp * 0.5);
+                    const wave = Math.sin(xi*0.006 + auroraT*0.001 + bi)*amp + Math.sin(xi*0.003 + auroraT*0.0007 + bi*2)*(amp*0.5);
                     actx.lineTo(xi, band.y + wave);
                 }
-                actx.lineTo(w, 0); actx.lineTo(0, 0); actx.closePath();
-                actx.fillStyle = grad;
-                actx.fill();
-                actx.restore();
+                actx.lineTo(w,0); actx.lineTo(0,0); actx.closePath();
+                actx.fillStyle = grad; actx.fill(); actx.restore();
             });
-            auroraT++;
-            requestAnimationFrame(drawAurora);
+            auroraT++; requestAnimationFrame(drawAurora);
         }
         drawAurora();
-        window.addEventListener('resize', () => {
-            auroraCanvas.width = window.innerWidth;
-            auroraCanvas.height = window.innerHeight;
-        });
+        window.addEventListener('resize', () => { auroraCanvas.width = window.innerWidth; auroraCanvas.height = window.innerHeight; });
 
         const nameText = "Duy Lâm - Dylm29_"; const nameEl = document.getElementById('typing-name');
-
         function typeWriter(text, element, speed) {
-            let i = 0;
-            let deleting = false;
-
+            let i = 0, deleting = false;
             function tick() {
-                const cursor = '<span class="typing-cursor">|</span>';
-
+                const cur = '<span class="typing-cursor">|</span>';
                 if (!deleting) {
-                    // Đang gõ
-                    element.innerHTML = text.substring(0, i + 1) + cursor;
-                    i++;
-                    if (i === text.length) {
-                        // Gõ xong, chờ 4s rồi xóa
-                        setTimeout(() => { deleting = true; tick(); }, 4000);
-                        return;
-                    }
+                    element.innerHTML = text.substring(0, i + 1) + cur; i++;
+                    if (i === text.length) { setTimeout(() => { deleting = true; tick(); }, 4000); return; }
                     setTimeout(tick, speed);
                 } else {
-                    // Đang xóa
-                    element.innerHTML = text.substring(0, i) + cursor;
-                    i--;
-                    if (i < 0) {
-                        // Xóa xong, chờ 0.5s rồi gõ lại
-                        i = 0;
-                        deleting = false;
-                        setTimeout(tick, 500);
-                        return;
-                    }
-                    setTimeout(tick, speed * 0.5); // xóa nhanh hơn gõ
+                    element.innerHTML = text.substring(0, i) + cur; i--;
+                    if (i < 0) { i = 0; deleting = false; setTimeout(tick, 500); return; }
+                    setTimeout(tick, speed * 0.5);
                 }
             }
-
             tick();
         }
         function revealText(event) { event.stopPropagation(); const textEl = document.getElementById('intro-text'); if (!textEl.classList.contains('revealed')) { createParticles(event.clientX, event.clientY); createParticles(event.clientX + 30, event.clientY - 30); textEl.classList.add('revealed'); } }
@@ -674,38 +533,54 @@
         function closeZoom() { const overlay = document.getElementById('zoom-overlay'); const clone = document.getElementById('zoom-clone'); overlay.classList.remove('active'); clone.classList.remove('active'); }
         document.getElementById('zoom-overlay').addEventListener('click', closeZoom);
 
-const songs = [
+        const songs = [
     { name: "Đường tôi chở em về - Bùi Trường Linh", src: "music.mp3",  img: "musicpt.png"  },
     { name: "Tiny love - Thịnh Suy",                  src: "music2.mp3", img: "musicpt2.png" },
     { name: "3107 - W/n ft. Nâu, Duongg",             src: "music3.mp3", img: "musicpt3.png" },
-	{ name: "So Well (Ver mới) - Ân Ngờ", src: "music4.mp3", img: "musicpt4.png" }
-    // { name: "Tên bài - Ca sĩ", src: "music4.mp3", img: "musicpt4.png" },
+    { name: "So Well (Ver mới) - Ân Ngờ",             src: "music4.mp3", img: "musicpt4.png" },
+    // Thêm bài mới vào đây:
+    // { name: "Tên bài - Ca sĩ", src: "music5.mp3", img: "musicpt5.png" },
 ];
+
         let index = 0; let isLooping = false;
         const audio = document.getElementById('audio'); const playBtn = document.getElementById('play'); const nextBtn = document.getElementById('next'); const prevBtn = document.getElementById('prev'); const loopBtn = document.getElementById('loop'); const overlay = document.getElementById('overlay'); const card = document.getElementById('profile-card'); const diskImg = document.getElementById('disk-img'); const progFill = document.getElementById('prog-fill'); const songNameContainer = document.getElementById('song-name-container');
 
+        // Tạo Audio pool — mỗi bài 1 object riêng, giữ buffer suốt
+        const audioPool = songs.map(song => {
+            const a = new Audio();
+            a.preload = 'auto';
+            a.src = song.src;
+            a.loop = false;
+            return a;
+        });
+
+        // Audio đang active
+        let currentAudio = audioPool[0];
+
         function load(i) {
-            // Disk fade out -> đổi ảnh -> fade in
+            // Disk fade out
             diskImg.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
             diskImg.style.opacity = '0';
             diskImg.style.transform = 'scale(0.85) rotate(-10deg)';
+            // Dừng bài cũ nếu khác bài đang load
+            const prev = currentAudio;
+            currentAudio = audioPool[i];
+            currentAudio.currentTime = 0;
+            if (prev !== currentAudio) { prev.pause(); prev.currentTime = 0; }
             setTimeout(() => {
-                audio.src = songs[i].src;
                 diskImg.src = songs[i].img;
                 diskImg.style.opacity = '1';
                 diskImg.style.transform = 'scale(1) rotate(0deg)';
             }, 260);
-            // Song name slide out -> slide in
+            // Song name slide
             songNameContainer.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
             songNameContainer.style.opacity = '0';
             songNameContainer.style.transform = 'translateX(-12px)';
             setTimeout(() => {
                 const name = songs[i].name;
-                if (name.length > 15) {
-                    songNameContainer.innerHTML = `<span class="song-title scrolling-text">${name}</span>`;
-                } else {
-                    songNameContainer.innerHTML = `<span class="song-title">${name}</span>`;
-                }
+                songNameContainer.innerHTML = name.length > 15
+                    ? `<span class="song-title scrolling-text">${name}</span>`
+                    : `<span class="song-title">${name}</span>`;
                 songNameContainer.style.transform = 'translateX(12px)';
                 setTimeout(() => {
                     songNameContainer.style.transition = 'opacity 0.25s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1)';
@@ -714,135 +589,70 @@ const songs = [
                 }, 20);
             }, 220);
         }
-
-        overlay.addEventListener('click', () => { 
-            overlay.style.opacity = 0; 
-            setTimeout(() => { 
-                overlay.style.visibility = 'hidden'; 
-                card.style.display = 'block'; 
-                typeWriter(nameText, nameEl, 100); 
-                load(index); audio.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; diskImg.classList.add('playing'); 
-            }, 800); 
-        });
-
-        playBtn.addEventListener('click', (e) => { e.stopPropagation(); if (audio.paused) { audio.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; diskImg.classList.add('playing'); } else { audio.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; diskImg.classList.remove('playing'); } });
-        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); index = (index + 1) % songs.length; load(index); audio.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; diskImg.classList.add('playing'); });
-        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); index = (index - 1 + songs.length) % songs.length; load(index); audio.play(); playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>'; diskImg.classList.add('playing'); });
-        loopBtn.addEventListener('click', (e) => { e.stopPropagation(); isLooping = !isLooping; audio.loop = isLooping; loopBtn.classList.toggle('active-loop'); });
-        audio.addEventListener('ended', () => { if(!isLooping) nextBtn.click(); });
-        // Format thời gian mm:ss
-        function fmtTime(s) {
-            if (isNaN(s)) return '0:00';
-            const m = Math.floor(s / 60);
-            const sec = Math.floor(s % 60);
-            return m + ':' + String(sec).padStart(2, '0');
+        // Hàm play an toàn dùng currentAudio từ pool
+        function safePlay() {
+            if (currentAudio.readyState >= 3) {
+                currentAudio.play();
+                playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                diskImg.classList.add('playing');
+            } else {
+                diskImg.style.opacity = '0.4';
+                const onReady = () => {
+                    diskImg.style.opacity = '1';
+                    currentAudio.play();
+                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+                    diskImg.classList.add('playing');
+                    currentAudio.removeEventListener('canplaythrough', onReady);
+                };
+                currentAudio.addEventListener('canplaythrough', onReady);
+            }
         }
 
-        // Cập nhật progress + thời gian
-        audio.addEventListener('timeupdate', () => {
-            if (audio.duration) {
-                const pct = (audio.currentTime / audio.duration) * 100;
-                progFill.style.width = pct + '%';
-                document.getElementById('time-cur').textContent = fmtTime(audio.currentTime);
+        overlay.addEventListener('click', () => {
+            overlay.style.opacity = 0;
+            // Unlock audio context ngay trong gesture — không play/pause để tránh giật
+            audioPool.forEach(a => { a.muted = true; a.play().then(() => { a.pause(); a.muted = false; a.currentTime = 0; }).catch(() => { a.muted = false; }); });
+            setTimeout(() => {
+                overlay.style.visibility = 'hidden';
+                card.style.display = 'block';
+                typeWriter(nameText, nameEl, 100);
+                load(index);
+                safePlay();
+            }, 800);
+        });
+
+        playBtn.addEventListener('click', (e) => { e.stopPropagation(); if (currentAudio.paused) { safePlay(); } else { currentAudio.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; diskImg.classList.remove('playing'); } });
+        nextBtn.addEventListener('click', (e) => { e.stopPropagation(); index = (index + 1) % songs.length; load(index); safePlay(); });
+        prevBtn.addEventListener('click', (e) => { e.stopPropagation(); index = (index - 1 + songs.length) % songs.length; load(index); safePlay(); });
+        loopBtn.addEventListener('click', (e) => { e.stopPropagation(); isLooping = !isLooping; audioPool.forEach(a => a.loop = false); currentAudio.loop = isLooping; loopBtn.classList.toggle('active-loop'); });
+        audioPool.forEach((a) => {
+            a.addEventListener('ended', () => {
+                if (!isLooping) {
+                    index = (index + 1) % songs.length;
+                    load(index);
+                    safePlay();
+                }
+            });
+        });
+        function fmtTime(s) { if (isNaN(s)) return '0:00'; return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0'); }
+        // Progress dùng requestAnimationFrame + currentAudio
+        function updateProgress() {
+            if (currentAudio && currentAudio.duration) {
+                progFill.style.width = (currentAudio.currentTime / currentAudio.duration * 100) + '%';
+                document.getElementById('time-cur').textContent = fmtTime(currentAudio.currentTime);
+                document.getElementById('time-dur').textContent = fmtTime(currentAudio.duration);
             }
-        });
-
-        audio.addEventListener('loadedmetadata', () => {
-            document.getElementById('time-dur').textContent = fmtTime(audio.duration);
-        });
-
-        // Click progress bar để tua
+            requestAnimationFrame(updateProgress);
+        }
+        requestAnimationFrame(updateProgress);
         const progBar = document.getElementById('prog-bar');
-        progBar.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const rect = progBar.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            audio.currentTime = pct * audio.duration;
-        });
-
-        // Phím tắt bàn phím
+        progBar.addEventListener('click', (e) => { e.stopPropagation(); const rect = progBar.getBoundingClientRect(); if(currentAudio.duration) currentAudio.currentTime = ((e.clientX - rect.left) / rect.width) * currentAudio.duration; });
         document.addEventListener('keydown', (e) => {
-            // Bỏ qua khi đang gõ vào input
             if (e.target.tagName === 'INPUT') return;
-            if (e.code === 'Space') {
-                e.preventDefault();
-                playBtn.click();
-            } else if (e.code === 'ArrowRight') {
-                e.preventDefault();
-                nextBtn.click();
-            } else if (e.code === 'ArrowLeft') {
-                e.preventDefault();
-                prevBtn.click();
-            }
+            if (e.code === 'Space') { e.preventDefault(); playBtn.click(); }
+            else if (e.code === 'ArrowRight') { e.preventDefault(); nextBtn.click(); }
+            else if (e.code === 'ArrowLeft') { e.preventDefault(); prevBtn.click(); }
         });
-
-        // --- DISCORD STATUS (LANYARD) ---
-        const DISCORD_ID = '710619450851983391';
-        const statusMap = {
-            online:  { cls: 'ds-online',  label: '🟢 Online' },
-            idle:    { cls: 'ds-idle',    label: '🌙 Idle' },
-            dnd:     { cls: 'ds-dnd',     label: '⛔ Do Not Disturb' },
-            offline: { cls: 'ds-offline', label: '⚫ Offline' },
-        };
-
-        async function fetchDiscordStatus() {
-            try {
-                const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`, {
-                    headers: { 'Accept': 'application/json' },
-                    mode: 'cors'
-                });
-                const json = await res.json();
-                console.log('[Lanyard]', JSON.stringify(json, null, 2)); // DEBUG
-
-                if (!json.success) {
-                    console.warn('[Lanyard] API trả về success=false');
-                    return;
-                }
-
-                const data = json.data;
-                const user = data.discord_user || {};
-
-                // --- Avatar ---
-                if (user.avatar) {
-                    document.getElementById('ds-avatar').src =
-                        `https://cdn.discordapp.com/avatars/${DISCORD_ID}/${user.avatar}.png?size=64`;
-                }
-
-                // --- Tên ---
-                document.getElementById('ds-name').textContent =
-                    user.global_name || user.username || 'Dylm29_';
-
-                // --- Status dot ---
-                const s = statusMap[data.discord_status] || statusMap.offline;
-                document.getElementById('ds-dot').className = s.cls;
-                document.getElementById('ds-status-label').textContent = s.label;
-
-                // --- Activity ---
-                const actTypeMap = { 0:'🎮', 1:'📺', 2:'🎵', 3:'👁️', 5:'🏆' };
-                let actText = 'Không có hoạt động';
-
-                if (data.spotify) {
-                    actText = `🎵 ${data.spotify.song} · ${data.spotify.artist}`;
-                } else if (Array.isArray(data.activities) && data.activities.length > 0) {
-                    const act = data.activities.find(a => a.type !== 4);
-                    if (act) {
-                        const icon = actTypeMap[act.type] || '▶️';
-                        const detail = act.details ? ` — ${act.details}` : '';
-                        const state  = act.state   ? ` · ${act.state}`   : '';
-                        actText = `${icon} ${act.name}${detail}${state}`;
-                    }
-                }
-                document.getElementById('ds-activity').textContent = actText;
-
-            } catch(e) {
-                console.error('[Lanyard] Lỗi:', e);
-                document.getElementById('ds-status-label').textContent = '⚫ Offline';
-                document.getElementById('ds-activity').textContent = 'Không có hoạt động';
-            }
-        }
-
-        fetchDiscordStatus();
-        setInterval(fetchDiscordStatus, 30000);
     </script>
 </body>
 </html>
