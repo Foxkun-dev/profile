@@ -291,7 +291,7 @@
         </div>
 
         <div class="location">
-            <i class="fa-solid fa-location-dot"></i> Phú Thọ (Vĩnh Phúc Cũ)
+            <i class="fa-solid fa-location-dot"></i> Phú Thọ (Vĩnh Phúc)
         </div>
 
         <div class="socials">
@@ -590,18 +590,24 @@
             }, 220);
         }
         // Hàm play an toàn dùng currentAudio từ pool
-        function safePlay() {
-            if (currentAudio.readyState >= 3) {
-                currentAudio.play();
+        function setPlaying(playing) {
+            if (playing) {
                 playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
                 diskImg.classList.add('playing');
+            } else {
+                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+                diskImg.classList.remove('playing');
+            }
+        }
+
+        function safePlay() {
+            if (currentAudio.readyState >= 3) {
+                currentAudio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
             } else {
                 diskImg.style.opacity = '0.4';
                 const onReady = () => {
                     diskImg.style.opacity = '1';
-                    currentAudio.play();
-                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                    diskImg.classList.add('playing');
+                    currentAudio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
                     currentAudio.removeEventListener('canplaythrough', onReady);
                 };
                 currentAudio.addEventListener('canplaythrough', onReady);
@@ -610,8 +616,6 @@
 
         overlay.addEventListener('click', () => {
             overlay.style.opacity = 0;
-            // Unlock audio context ngay trong gesture — không play/pause để tránh giật
-            audioPool.forEach(a => { a.muted = true; a.play().then(() => { a.pause(); a.muted = false; a.currentTime = 0; }).catch(() => { a.muted = false; }); });
             setTimeout(() => {
                 overlay.style.visibility = 'hidden';
                 card.style.display = 'block';
@@ -621,7 +625,7 @@
             }, 800);
         });
 
-        playBtn.addEventListener('click', (e) => { e.stopPropagation(); if (currentAudio.paused) { safePlay(); } else { currentAudio.pause(); playBtn.innerHTML = '<i class="fa-solid fa-play"></i>'; diskImg.classList.remove('playing'); } });
+        playBtn.addEventListener('click', (e) => { e.stopPropagation(); if (currentAudio.paused) { safePlay(); } else { currentAudio.pause(); setPlaying(false); } });
         nextBtn.addEventListener('click', (e) => { e.stopPropagation(); index = (index + 1) % songs.length; load(index); safePlay(); });
         prevBtn.addEventListener('click', (e) => { e.stopPropagation(); index = (index - 1 + songs.length) % songs.length; load(index); safePlay(); });
         loopBtn.addEventListener('click', (e) => { e.stopPropagation(); isLooping = !isLooping; audioPool.forEach(a => a.loop = false); currentAudio.loop = isLooping; loopBtn.classList.toggle('active-loop'); });
