@@ -138,8 +138,9 @@
 
 
         .player-area { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 15px; text-align: left; border: 1px solid rgba(255,255,255,0.1); }
-        .disk-mini { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #555; animation: spin 5s linear infinite; animation-play-state: paused; flex-shrink: 0; }
+        .disk-mini { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #555; animation: spin 5s linear infinite; animation-play-state: paused; flex-shrink: 0; transition: box-shadow 0.3s, border-color 0.3s; }
         .disk-mini.playing { animation-play-state: running; border-color: var(--accent); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .disk-mini:hover { border-color: #fff; box-shadow: 0 0 18px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.2); }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
         .song-info { flex-grow: 1; overflow: hidden; white-space: nowrap; margin-left: 10px; }
@@ -570,7 +571,9 @@
             setTimeout(() => {
                 diskImg.src = songs[i].img;
                 diskImg.style.opacity = '1';
-                diskImg.style.transform = 'scale(1) rotate(0deg)';
+                // Xóa inline transform để CSS spin animation hoạt động lại
+                diskImg.style.transform = '';
+                diskImg.style.transition = '';
             }, 260);
             // Song name slide
             songNameContainer.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
