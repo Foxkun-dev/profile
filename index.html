@@ -51,6 +51,7 @@
 
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         #aurora-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.35; }
+        #lightning-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 
         /* --- PROFILE CARD --- */
         #profile-card {
@@ -138,9 +139,9 @@
 
 
         .player-area { background: rgba(255,255,255,0.03); border-radius: 12px; padding: 15px; display: flex; align-items: center; gap: 15px; text-align: left; border: 1px solid rgba(255,255,255,0.1); }
-        .disk-mini { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #555; animation: spin 5s linear infinite; animation-play-state: paused; flex-shrink: 0; transition: box-shadow 0.3s, border-color 0.3s; }
+        .disk-mini { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #555; animation: spin 5s linear infinite; animation-play-state: paused; flex-shrink: 0; }
         .disk-mini.playing { animation-play-state: running; border-color: var(--accent); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
-        .disk-mini:hover { border-color: #fff; box-shadow: 0 0 18px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.2); }
+        .disk-mini:hover { border-color: #fff !important; box-shadow: 0 0 20px rgba(255,255,255,0.7), 0 0 35px rgba(255,255,255,0.2) !important; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
         .song-info { flex-grow: 1; overflow: hidden; white-space: nowrap; margin-left: 10px; }
@@ -253,6 +254,7 @@
 <body oncontextmenu="return false">
 
     <div id="bg-layer"></div>
+    <canvas id="lightning-canvas"></canvas>
     <canvas id="rain-canvas"></canvas>
     <canvas id="aurora-canvas"></canvas>
     <div id="custom-cursor"></div>
@@ -514,16 +516,27 @@
         const nameText = "Duy Lâm - Dylm29_"; const nameEl = document.getElementById('typing-name');
         function typeWriter(text, element, speed) {
             let i = 0, deleting = false;
+            const cur = '<span class="typing-cursor">|</span>';
             function tick() {
-                const cur = '<span class="typing-cursor">|</span>';
                 if (!deleting) {
-                    element.innerHTML = text.substring(0, i + 1) + cur; i++;
-                    if (i === text.length) { setTimeout(() => { deleting = true; tick(); }, 4000); return; }
-                    setTimeout(tick, speed);
+                    element.innerHTML = text.substring(0, i) + cur;
+                    if (i < text.length) {
+                        i++;
+                        setTimeout(tick, speed);
+                    } else {
+                        // Gõ xong, chờ 4s rồi xóa
+                        setTimeout(() => { deleting = true; tick(); }, 4000);
+                    }
                 } else {
-                    element.innerHTML = text.substring(0, i) + cur; i--;
-                    if (i < 0) { i = 0; deleting = false; setTimeout(tick, 500); return; }
-                    setTimeout(tick, speed * 0.5);
+                    element.innerHTML = text.substring(0, i) + cur;
+                    if (i > 0) {
+                        i--;
+                        setTimeout(tick, speed * 0.45);
+                    } else {
+                        // Xóa xong, chờ 0.5s rồi gõ lại
+                        deleting = false;
+                        setTimeout(tick, 500);
+                    }
                 }
             }
             tick();
@@ -571,7 +584,6 @@
             setTimeout(() => {
                 diskImg.src = songs[i].img;
                 diskImg.style.opacity = '1';
-                // Xóa inline transform để CSS spin animation hoạt động lại
                 diskImg.style.transform = '';
                 diskImg.style.transition = '';
             }, 260);
@@ -660,6 +672,103 @@
             else if (e.code === 'ArrowRight') { e.preventDefault(); nextBtn.click(); }
             else if (e.code === 'ArrowLeft') { e.preventDefault(); prevBtn.click(); }
         });
+
+        // --- SÉT NGẪU NHIÊN ---
+        const lc = document.getElementById('lightning-canvas');
+        const lctx = lc.getContext('2d');
+        lc.width = window.innerWidth; lc.height = window.innerHeight;
+        window.addEventListener('resize', () => { lc.width = window.innerWidth; lc.height = window.innerHeight; });
+
+        function drawBolt(x1, y1, x2, y2, spread, depth) {
+            if (depth <= 0 || spread < 1.5) {
+                lctx.beginPath(); lctx.moveTo(x1, y1); lctx.lineTo(x2, y2); lctx.stroke();
+                return;
+            }
+            const mx = (x1 + x2) / 2 + (Math.random() - 0.5) * spread;
+            const my = (y1 + y2) / 2 + (Math.random() - 0.5) * spread * 0.3;
+            drawBolt(x1, y1, mx, my, spread * 0.55, depth - 1);
+            drawBolt(mx, my, x2, y2, spread * 0.55, depth - 1);
+            // Nhánh phụ random
+            if (Math.random() < 0.35) {
+                const bx = mx + (Math.random() - 0.5) * spread * 1.5;
+                const by = my + Math.random() * spread * 1.2;
+                lctx.save();
+                lctx.globalAlpha *= 0.5;
+                lctx.lineWidth *= 0.5;
+                drawBolt(mx, my, bx, by, spread * 0.3, depth - 2);
+                lctx.restore();
+            }
+        }
+
+        function flashLightning() {
+            lc.width = lc.width; // clear canvas
+
+            const startX = Math.random() * window.innerWidth * 0.8 + window.innerWidth * 0.1;
+            const startY = 0;
+            const endX = startX + (Math.random() - 0.5) * 500;
+            const endY = Math.random() * window.innerHeight * 0.75 + window.innerHeight * 0.15;
+
+            // Lớp glow rộng ngoài cùng
+            lctx.save();
+            lctx.strokeStyle = 'rgba(120,180,255,0.08)';
+            lctx.lineWidth = 28;
+            lctx.shadowColor = 'rgba(120,180,255,0.6)';
+            lctx.shadowBlur = 60;
+            lctx.globalAlpha = 0.8;
+            drawBolt(startX, startY, endX, endY, 220, 7);
+
+            // Lớp glow giữa
+            lctx.strokeStyle = 'rgba(160,210,255,0.25)';
+            lctx.lineWidth = 10;
+            lctx.shadowColor = 'rgba(160,210,255,0.8)';
+            lctx.shadowBlur = 35;
+            lctx.globalAlpha = 0.9;
+            drawBolt(startX, startY, endX, endY, 220, 7);
+
+            // Lõi trắng sáng
+            lctx.strokeStyle = 'rgba(240,248,255,1)';
+            lctx.lineWidth = 2.5;
+            lctx.shadowColor = 'rgba(255,255,255,1)';
+            lctx.shadowBlur = 18;
+            lctx.globalAlpha = 1;
+            drawBolt(startX, startY, endX, endY, 220, 7);
+            lctx.restore();
+
+            // Flash sáng nhẹ toàn màn hình khi sét đánh
+            document.body.style.transition = 'none';
+            document.getElementById('bg-layer').style.filter = 'brightness(1.8) blur(0px)';
+            setTimeout(() => {
+                document.getElementById('bg-layer').style.filter = '';
+                document.getElementById('bg-layer').style.transition = 'all 0.4s ease-out';
+            }, 60);
+
+            // Xóa tia sét dần
+            setTimeout(() => {
+                let op = 1;
+                const fade = setInterval(() => {
+                    op -= 0.12;
+                    if (op <= 0) { clearInterval(fade); lc.width = lc.width; return; }
+                    lc.width = lc.width;
+                    lctx.globalAlpha = op;
+                    lctx.strokeStyle = 'rgba(240,248,255,0.6)';
+                    lctx.lineWidth = 1.5;
+                    lctx.shadowColor = 'rgba(180,220,255,0.8)';
+                    lctx.shadowBlur = 20;
+                    drawBolt(startX, startY, endX, endY, 220, 7);
+                }, 25);
+            }, Math.random() * 60 + 50);
+        }
+
+        function triggerLightning() {
+            const flashCount = Math.floor(Math.random() * 2) + 1;
+            let delay = 0;
+            for (let f = 0; f < flashCount; f++) {
+                setTimeout(flashLightning, delay);
+                delay += Math.random() * 150 + 80;
+            }
+            setTimeout(triggerLightning, Math.random() * 11000 + 1000);
+        }
+        setTimeout(triggerLightning, Math.random() * 3000 + 2000);
     </script>
 </body>
 </html>
